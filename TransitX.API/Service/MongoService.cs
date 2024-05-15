@@ -1,23 +1,23 @@
 ﻿using MongoDB.Driver;
 using TransitX.API.Data.Interfaces;
-using TransitX.Common.Repository;
+using TransitX.Common.Service;
 
-namespace TransitX.API.Data.Repository
+namespace TransitX.API.Service
 {
     /// <summary>
-    /// Implementation of IRepository<TEntity> for MongoDB.
+    /// Implementation of IService<TEntity> for MongoDB.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity.</typeparam>
-    public class MongoRepository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class MongoService<TEntity> : IService<TEntity> where TEntity : class
     {
         private readonly IMongoCollection<TEntity> _collection;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MongoRepository{TEntity}"/> class.
+        /// Initializes a new instance of the <see cref="MongoService{TEntity}"/> class.
         /// </summary>
         /// <param name="mongoDbService">The MongoDB service.</param>
         /// <param name="collectionName">The name of the collection.</param>
-        public MongoRepository(IMongoDbService mongoDbService, string collectionName = null)
+        public MongoService(IMongoDbRepository mongoDbService, string collectionName = null)
         {
             if (mongoDbService == null)
             {

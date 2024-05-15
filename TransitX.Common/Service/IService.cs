@@ -1,10 +1,10 @@
-﻿namespace TransitX.Common.Repository
+﻿namespace TransitX.Common.Service
 {
     /// <summary>
     /// Interface for a generic repository providing CRUD operations for entities of type TEntity.
     /// </summary>
     /// <typeparam name="TEntity">The type of entity.</typeparam>
-    public interface IRepository<TEntity>
+    public interface IService<TEntity>
     {
         /// <summary>
         /// Retrieves all entities from the repository.

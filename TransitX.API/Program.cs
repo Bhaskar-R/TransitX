@@ -1,9 +1,9 @@
 using MongoDB.Bson.Serialization;
 using TransitX.API.Data;
 using TransitX.API.Data.Interfaces;
-using TransitX.API.Data.Repository;
+using TransitX.API.Service;
 using TransitX.Common.Models;
-using TransitX.Common.Repository;
+using TransitX.Common.Service;
 
 BsonSerializer.RegisterSerializer(typeof(Coordinate), new CoordinateSerializer());
 
@@ -16,8 +16,8 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "TransitX", Version = "v1.0" });
 });
-builder.Services.AddSingleton<IMongoDbService, MongoDbService>();
-builder.Services.AddScoped(typeof(IRepository<>), typeof(MongoRepository<>));
+builder.Services.AddSingleton<IMongoDbRepository, MongoDbRepository>();
+builder.Services.AddScoped(typeof(IService<>), typeof(MongoService<>));
 
 var app = builder.Build();
 

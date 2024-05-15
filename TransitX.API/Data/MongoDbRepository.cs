@@ -6,7 +6,7 @@ namespace TransitX.API.Data
     /// <summary>
     /// Service for interacting with MongoDB database.
     /// </summary>
-    public class MongoDbService : IMongoDbService
+    public class MongoDbRepository : IMongoDbRepository
     {
         private readonly IConfiguration _configuration;
 
@@ -16,12 +16,12 @@ namespace TransitX.API.Data
         public IMongoDatabase Database { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="MongoDbService"/> class with the specified configuration.
+        /// Initializes a new instance of the <see cref="MongoDbRepository"/> class with the specified configuration.
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <exception cref="ArgumentException">Thrown when the database connection string is missing or empty.</exception>
         /// <exception cref="Exception">Thrown when an error occurs while connecting to the MongoDB database.</exception>
-        public MongoDbService(IConfiguration configuration)
+        public MongoDbRepository(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 

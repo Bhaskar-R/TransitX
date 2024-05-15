@@ -3,22 +3,22 @@ using MongoDB.Driver;
 using Moq;
 using TransitX.API.Controllers;
 using TransitX.Common.Models;
-using TransitX.Common.Repository;
+using TransitX.Common.Service;
 
 namespace TransitX.Tests
 {
     [TestClass]
     public class RouteControllerTests
     {
-        private Mock<IRepository<Route>> _mockRepository;
+        private Mock<IService<Route>> _mockService;
         private RouteController _controller;
 
         [TestInitialize]
         public void Setup()
         {
             // Arrange
-            _mockRepository = new Mock<IRepository<Route>>();
-            _controller = new RouteController(_mockRepository.Object);
+            _mockService = new Mock<IService<Route>>();
+            _controller = new RouteController(_mockService.Object);
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace TransitX.Tests
                 new Route {Id = "123", StartLocation = new Coordinate(1.0, 2.0), EndLocation = new Coordinate(3.0, 4.0)},
                 new Route {Id = "456", StartLocation = new Coordinate(5.0, 6.0), EndLocation = new Coordinate(7.0, 8.0)}
             };
-            _mockRepository.Setup(repo => repo.GetPage(1, 10)).ReturnsAsync(testRoutes);
+            _mockService.Setup(repo => repo.GetPage(1, 10)).ReturnsAsync(testRoutes);
 
             // Act
             var actionResult = await _controller.Get();
@@ -47,7 +47,7 @@ namespace TransitX.Tests
         {
             // Arrange
             var testRoute = new Route { Id = "123", StartLocation = new Coordinate(1.0, 2.0), EndLocation = new Coordinate(3.0, 4.0) };
-            _mockRepository.Setup(repo => repo.GetById("123")).ReturnsAsync(testRoute);
+            _mockService.Setup(repo => repo.GetById("123")).ReturnsAsync(testRoute);
 
             // Act
             var actionResult = await _controller.GetById("123");
@@ -67,7 +67,7 @@ namespace TransitX.Tests
         {
             // Arrange
             var newRoute = new Route { Id = "789", StartLocation = new Coordinate(9.0, 10.0), EndLocation = new Coordinate(11.0, 12.0) };
-            _mockRepository.Setup(repo => repo.Insert(newRoute)).Returns(Task.CompletedTask);
+            _mockService.Setup(repo => repo.Insert(newRoute)).Returns(Task.CompletedTask);
 
             // Act
             var result = await _controller.Create(newRoute);
@@ -85,7 +85,7 @@ namespace TransitX.Tests
         {
             // Arrange
             var updatedRoute = new Route { Id = "123", StartLocation = new Coordinate(1.0, 2.0), EndLocation = new Coordinate(3.0, 4.0) };
-            _mockRepository.Setup(repo => repo.Update("123", updatedRoute)).ReturnsAsync(true);
+            _mockService.Setup(repo => repo.Update("123", updatedRoute)).ReturnsAsync(true);
 
             // Act
             var result = await _controller.Update("123", updatedRoute);
@@ -98,7 +98,7 @@ namespace TransitX.Tests
         public async Task TestDelete_ReturnsNoContent_WhenDeletedSuccessfully()
         {
             // Arrange
-            _mockRepository.Setup(repo => repo.Delete("123")).ReturnsAsync(true);
+            _mockService.Setup(repo => repo.Delete("123")).ReturnsAsync(true);
 
             // Act
             var result = await _controller.Delete("123");
@@ -111,7 +111,7 @@ namespace TransitX.Tests
         public async Task TestDeleteAll_ReturnsNoContent_WhenDeletedSuccessfully()
         {
             // Arrange
-            _mockRepository.Setup(repo => repo.DeleteAll()).ReturnsAsync(true);
+            _mockService.Setup(repo => repo.DeleteAll()).ReturnsAsync(true);
 
             // Act
             var result = await _controller.DeleteAll();
@@ -124,7 +124,7 @@ namespace TransitX.Tests
         public async Task TestDeleteAll_ReturnsNotFound_WhenNoDocumentsDeleted()
         {
             // Arrange
-            _mockRepository.Setup(repo => repo.DeleteAll()).ReturnsAsync(false);
+            _mockService.Setup(repo => repo.DeleteAll()).ReturnsAsync(false);
 
             // Act
             var result = await _controller.DeleteAll();

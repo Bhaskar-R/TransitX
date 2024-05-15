@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TransitX.API.Controllers.Interfaces;
-using TransitX.Common.Repository;
+using TransitX.Common.Service;
 
 namespace TransitX.API.Controllers
 {
@@ -10,11 +10,11 @@ namespace TransitX.API.Controllers
     /// <typeparam name="TEntity">The type of entity.</typeparam>
     public abstract class BaseController<TEntity> : ControllerBase, IBaseController<TEntity> where TEntity : class
     {
-        protected readonly IRepository<TEntity> _repository;
+        protected readonly IService<TEntity> _service;
 
-        public BaseController(IRepository<TEntity> repository)
+        public BaseController(IService<TEntity> service)
         {
-            _repository = repository;
+            _service = service;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace TransitX.API.Controllers
         {
             try
             {
-                var items = await _repository.GetPage(pageNumber, pageSize);
+                var items = await _service.GetPage(pageNumber, pageSize);
                 return Ok(items);
             }
             catch (Exception ex)
@@ -48,7 +48,7 @@ namespace TransitX.API.Controllers
         {
             try
             {
-                var entity = await _repository.GetById(id);
+                var entity = await _service.GetById(id);
                 return entity != null ? Ok(entity) : NotFound();
             }
             catch (Exception ex)
@@ -68,7 +68,7 @@ namespace TransitX.API.Controllers
         {
             try
             {
-                await _repository.Insert(entity);
+                await _service.Insert(entity);
                 return CreatedAtAction(nameof(GetById), new { id = typeof(TEntity).GetProperty("Id").GetValue(entity).ToString() }, entity);
             }
             catch (Exception ex)
@@ -89,7 +89,7 @@ namespace TransitX.API.Controllers
         {
             try
             {
-                var result = await _repository.Update(id, entity);
+                var result = await _service.Update(id, entity);
                 return result ? NoContent() : NotFound();
             }
             catch (Exception ex)
@@ -109,7 +109,7 @@ namespace TransitX.API.Controllers
         {
             try
             {
-                var result = await _repository.Delete(id);
+                var result = await _service.Delete(id);
                 return result ? NoContent() : NotFound();
             }
             catch (Exception ex)
@@ -128,7 +128,7 @@ namespace TransitX.API.Controllers
         {
             try
             {
-                var result = await _repository.DeleteAll();
+                var result = await _service.DeleteAll();
                 return result ? NoContent() : NotFound();
             }
             catch (Exception ex)

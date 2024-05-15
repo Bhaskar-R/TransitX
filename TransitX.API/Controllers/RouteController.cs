@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TransitX.Common;
-using TransitX.Common.Repository;
+using TransitX.Common.Service;
 using Route = TransitX.Common.Models.Route;
 
 namespace TransitX.API.Controllers
@@ -12,11 +12,11 @@ namespace TransitX.API.Controllers
     [ApiController]
     public class RouteController : BaseController<Route>
     {
-        private readonly IRepository<Route> _routeRepository;
+        private readonly IService<Route> _routeService;
 
-        public RouteController(IRepository<Route> routeRepository) : base(routeRepository)
+        public RouteController(IService<Route> routeService) : base(routeService)
         {
-            _routeRepository = routeRepository;
+            _routeService = routeService;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace TransitX.API.Controllers
         {
             try
             {
-                var routes = await _routeRepository.GetAll();
+                var routes = await _routeService.GetAll();
                 var totalDistance = CommonUtilities.CalculateTotalDistance(routes);
                 return Ok(totalDistance);
             }

@@ -5,7 +5,7 @@ namespace TransitX.API.Data.Interfaces
     /// <summary>
     /// Interface for interacting with MongoDB database collections.
     /// </summary>
-    public interface IMongoDbService
+    public interface IMongoDbRepository
     {
         /// <summary>
         /// Gets a collection from the MongoDB database.

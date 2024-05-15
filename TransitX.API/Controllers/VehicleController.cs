@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TransitX.Common;
 using TransitX.Common.Models;
-using TransitX.Common.Repository;
+using TransitX.Common.Service;
 
 namespace TransitX.API.Controllers
 {
@@ -12,11 +12,11 @@ namespace TransitX.API.Controllers
     [ApiController]
     public class VehicleController : BaseController<Vehicle>
     {
-        private readonly IRepository<Vehicle> _vehicleRepository;
+        private readonly IService<Vehicle> _vehicleService;
 
-        public VehicleController(IRepository<Vehicle> vehicleRepository) : base(vehicleRepository)
+        public VehicleController(IService<Vehicle> vehicleService) : base(vehicleService)
         {
-            _vehicleRepository = vehicleRepository;
+            _vehicleService = vehicleService;
         }
 
         /// <summary>
